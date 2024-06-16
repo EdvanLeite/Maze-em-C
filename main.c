@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
+#include <locale.h>
 
 #define RED     "\x1b[41m"  // Código ANSI para fundo vermelho
 #define GREEN   "\x1b[42m"  // Código ANSI para fundo verde
@@ -58,6 +59,8 @@ void imprimirInstrucoes() {
 }
 
 int main() {
+
+    setlocale(LC_ALL, "Portuguese");
 
     char menu[ALTURA][LARGURA] = {
         "==============================================",
