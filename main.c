@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
+#include <termios.h>
+#include <unistd.h> //inserção de bibliotecas para substituir a biblioteca conio 
 #include <string.h>
 #include <locale.h>
 
@@ -16,7 +17,7 @@ typedef struct {
 } Posicao;
 
 void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
-    system("cls"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela 
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
@@ -34,7 +35,7 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
 }
 
 void imprimirMenu(char menu1[ALTURA][LARGURA]) {
-    system("cls"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela 
     for (int i = 0; i < 35; i++) {
         for (int j = 0; j < 50; j++) {
             if (menu1[i][j] == '=') {
@@ -49,13 +50,26 @@ void imprimirMenu(char menu1[ALTURA][LARGURA]) {
 }
 
 void imprimirInstrucoes() {
-    system("cls"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela 
     printf("Instruções do Jogo do Labirinto:\n");
     printf("1. Use as teclas W, A, S, D para mover o jogador (P) pelo labirinto.\n");
     printf("2. Tente chegar à saída marcada como 'E'.\n");
     printf("3. Evite as paredes marcadas como '#'.\n");
     printf("\nPressione qualquer tecla para voltar ao menu.\n");
-    _getch(); // Espera por uma tecla para voltar ao menu
+    getchar(); // Espera por uma tecla para voltar ao menu  //_getch por getchar
+}
+
+// Função para capturar a entrada do teclado sem esperar o Enter
+char getch() {
+    struct termios oldt, newt;
+    char ch;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    return ch;
 }
 
 int main() {
@@ -185,7 +199,7 @@ int main() {
 
         while (jogando) {
             imprimirLabirinto(labirinto, jogador);
-            entrada = _getch(); // Captura a entrada do teclado
+            entrada = getch(); // Captura a entrada do teclado
 
             switch (entrada) {
                 case 'w': // Move para cima
@@ -215,7 +229,7 @@ int main() {
                 jogando = 0;
                 printf("Parabéns! Você chegou à saída!\n");
                 printf("Pressione qualquer tecla para voltar ao menu.\n");
-                _getch(); // Espera por uma tecla para voltar ao menu
+                getchar(); // Espera por uma tecla para voltar ao menu
             }
         }
     }
