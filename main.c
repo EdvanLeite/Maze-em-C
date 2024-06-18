@@ -1,4 +1,5 @@
 #include <stdio.h>
+<<<<<<< HEAD
 #include <stdlib.h>//Necessário para usar a função System("cls")
 #include <conio.h>//Necessário para scanear sem ENTER
 #include <string.h>
@@ -15,6 +16,13 @@
 
 
 
+=======
+#include <stdlib.h>
+#include <termios.h>
+#include <unistd.h> //inserção de bibliotecas para substituir a biblioteca conio 
+#include <string.h>
+#include <locale.h>
+>>>>>>> 42237dc8eee7a3066c1a290020ae18c0f3153d63
 
 #define LARGURA 50
 #define ALTURA  35
@@ -24,7 +32,7 @@ typedef struct {
 } Posicao;
 
 void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
-    system("cls"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela 
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
@@ -42,9 +50,15 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
 }
 
 void imprimirMenu(char menu1[ALTURA][LARGURA]) {
+<<<<<<< HEAD
     system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
+=======
+    system("cls"); // Limpar a tela 
+    for (int i = 0; i < 35; i++) {
+        for (int j = 0; j < 50; j++) {
+>>>>>>> 42237dc8eee7a3066c1a290020ae18c0f3153d63
             if (menu1[i][j] == '=') {
                 printf(BLUE "  " RESET); // Blue for '='
             } else if (menu1[i][j] != ' ') {
@@ -56,6 +70,7 @@ void imprimirMenu(char menu1[ALTURA][LARGURA]) {
 
 }
 
+<<<<<<< HEAD
 void imprimirInstrucoes(char instrucao[ALTURA][LARGURA]) {
     system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
@@ -71,9 +86,34 @@ void imprimirInstrucoes(char instrucao[ALTURA][LARGURA]) {
         printf("\n");
     }
     _getch();
+=======
+void imprimirInstrucoes() {
+    system("cls"); // Limpar a tela 
+    printf("Instruções do Jogo do Labirinto:\n");
+    printf("1. Use as teclas W, A, S, D para mover o jogador (P) pelo labirinto.\n");
+    printf("2. Tente chegar à saída marcada como 'E'.\n");
+    printf("3. Evite as paredes marcadas como '#'.\n");
+    printf("\nPressione qualquer tecla para voltar ao menu.\n");
+    getchar(); // Espera por uma tecla para voltar ao menu  //_getch por getchar
+}
+
+// Função para capturar a entrada do teclado sem esperar o Enter
+char getch() {
+    struct termios oldt, newt;
+    char ch;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    return ch;
+>>>>>>> 42237dc8eee7a3066c1a290020ae18c0f3153d63
 }
 
 int main() {
+
+    setlocale(LC_ALL, "Portuguese");
 
     char menu[ALTURA][LARGURA] = {
         "==============================================",
@@ -290,9 +330,15 @@ int main() {
                 break;
         }
 
+<<<<<<< HEAD
         while (jogando==1) {
             imprimirLabirinto(labirinto1, jogador);
             entrada = _getch(); // Captura a entrada do teclado
+=======
+        while (jogando) {
+            imprimirLabirinto(labirinto, jogador);
+            entrada = getch(); // Captura a entrada do teclado
+>>>>>>> 42237dc8eee7a3066c1a290020ae18c0f3153d63
 
             switch (entrada) {
                 case 'w': // Move para cima
@@ -321,6 +367,7 @@ int main() {
             if (labirinto1[jogador.y][jogador.x] == 'E') {
                 jogando ++;
                 printf("Parabéns! Você chegou à saída!\n");
+<<<<<<< HEAD
                 printf("Vamos para o Segundo Labirinto\n");
                  sleep(3);
                  jogador.x = 1;
@@ -363,6 +410,10 @@ int main() {
             }
 
                 
+=======
+                printf("Pressione qualquer tecla para voltar ao menu.\n");
+                getchar(); // Espera por uma tecla para voltar ao menu
+>>>>>>> 42237dc8eee7a3066c1a290020ae18c0f3153d63
             }
         }
 
