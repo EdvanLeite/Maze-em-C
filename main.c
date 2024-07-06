@@ -52,7 +52,7 @@ void imprimirMenu(char menu1[ALTURA][LARGURA]) {
                 printf(BLUE "  " RESET); // Blue for '='
             } else if (menu1[i][j] == '~') {
                 printf(RED "  " RESET, menu1[i][j]); // Red for menu text
-            } else if (menu1[i][j] != ' ') {
+            } else {
                 printf(RED " %c" RESET, menu1[i][j]); // Red for menu text
             } 
         }
@@ -67,12 +67,10 @@ void imprimirInstrucoes(char instrucao[ALTURA][LARGURA]) {
         for (int j = 0; j < LARGURA; j++) {
             if (instrucao[i][j] == '=') {
                 printf(CYAN "  " RESET); // Fundo azul para '='
-            } else if (instrucao[i][j] == ' ') {
-                printf(MAGENTA " " RESET); // Fundo magenta para espaços
-            }else if (instrucao[i][j] == '~') {
+            } else if (instrucao[i][j] == '~') {
                 printf(MAGENTA "  " RESET); // Fundo magenta para espaços
             }else  {
-                printf(MAGENTA "%c" RESET, instrucao[i][j]); // Fundo magenta para espaços
+                printf(MAGENTA " %c" RESET, instrucao[i][j]); // Fundo magenta para espaços
             }
         }
         printf("\n");
@@ -86,12 +84,10 @@ void imprimirAvanco(char Avanco[ALTURA][LARGURA]) {
         for (int j = 0; j < LARGURA; j++) {
             if (Avanco[i][j] == '=') {
                 printf(CYAN "  " RESET); // Fundo azul para '='
-            } else if (Avanco[i][j] == ' ') {
-                printf(MAGENTA " " RESET); // Fundo magenta para espaços
-            }else if (Avanco[i][j] == '~') {
+            } else if (Avanco[i][j] == '~') {
                 printf(MAGENTA "  " RESET); // Fundo magenta para espaços
             }else  {
-                printf(MAGENTA "%c" RESET, Avanco[i][j]); // Fundo magenta para espaços
+                printf(MAGENTA " %c" RESET, Avanco[i][j]); // Fundo magenta para espaços
             }
         }
         printf("\n");
@@ -119,10 +115,10 @@ int main() {
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
-        "~===============================================~",
-        "~===============================================~",
-        "~===============================================~",
-        "~===============================================~",
+        "~====================-MENU-=====================~",
+        "~================1-INICIAR JOGO=================~",
+        "~=================2-INSTRUCOES==================~",
+        "~====================3-SAIR=====================~",
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
@@ -157,9 +153,47 @@ int main() {
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
+        "~=======Instruções do Jogo do Labirinto=======~",
+        "~=====1.Use as teclas W, A, S, D para mover=====~",
+        "~==========o jogador pelo labirinto=============~",
+        "~=2.Tente chegar à saída marcada de cor Azul==~",
+        "~=3.Evite paredes, siga pelos corredores livres=~",
+        "~=Pressione qualquer tecla para voltar ao menu=~",
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    };
+
+    char Avancar1[ALTURA][LARGURA] = {
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===============================================~",
+        "~===VOCE CHEGOU A SAIDA DO PRIMEIRO LABIRINTO===~",
+        "~===============================================~",
+        "~========VAMOS PARA O SEGUNDO LABIRINTO!========~",
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
@@ -177,7 +211,7 @@ int main() {
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     };
 
-    char Avancar[ALTURA][LARGURA] = {
+    char Avancar2[ALTURA][LARGURA] = {
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
         "~===============================================~",
         "~===============================================~",
@@ -195,9 +229,9 @@ int main() {
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
+        "~===VOCE CHEGOU A SAIDA DO SEGUNDO LABIRINTO====~",
         "~===============================================~",
-        "~===============================================~",
-        "~===============================================~",
+        "~=======VAMOS PARA O TERCEIRO LABIRINTO!========~",
         "~===============================================~",
         "~===============================================~",
         "~===============================================~",
@@ -214,44 +248,13 @@ int main() {
         "~===============================================~",
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     };
-    
 
 
-
-
-
-
-     /*char *menu_items[] = {
-        "=======================-MENU-=====================",
-        "===================1-INICIAR JOGO==================",
-        "====================2-INSTRUCOES==================",
-        "=======================3-SAIR====================="
-    };
-
-    char *intrucoes_itens[] = {
-        "Instruções do Jogo do Labirinto:",
-    " 1. Use as teclas W, A, S, D para mover o jogador (P) pelo labirinto.",
-    " 2. Tente chegar à saída marcada como 'E'.",
-    " 3. Evite as paredes marcadas .===",
-    " Pressione qualquer tecla para voltar ao menu.",
-    };
-
-
-    strcpy(menu[18], menu_items[0]);
-    strcpy(menu[19], menu_items[1]);
-    strcpy(menu[20], menu_items[2]);
-    strcpy(menu[21], menu_items[3]);
-
-    strcpy(instrucoes[16], intrucoes_itens[0]);
-    strcpy(instrucoes[17], intrucoes_itens[1]);
-    strcpy(instrucoes[18], intrucoes_itens[2]);
-    strcpy(instrucoes[19], intrucoes_itens[3]);
-    strcpy(instrucoes[20], intrucoes_itens[4]);*/
-
+   
 
     char labirinto1[LABIRINTOS_ALTURA][LABRINTOS_LARGURA] = {
         "---------------------------------------------------------------------",
-        "-P      E       #           #     #       #         #       #       -",
+        "-P              #           #     #       #         #       #       -",
         "-## #####   ### ### ##### ### ### ### ### ##### ##### #####  #### ##-",
         "-                 #     #     #   #   #       #       #   #       # -",
         "- ### ####### ### ##### ####### ##### ### ##### ####### ### ### ### -",
@@ -289,11 +292,8 @@ int main() {
         "---------------------------------------------------------------------"
     };
     
-    
 
-   
-
-      char labirinto3[LABIRINTOS_ALTURA][LABRINTOS_LARGURA] = {
+      char labirinto2[LABIRINTOS_ALTURA][LABRINTOS_LARGURA] = {
         "---------------------------------------------------------------------",
         "-P        #     #           #     #       #         #       #       -",
         "-## ####### ### ### ##### ### ### ### ### ##### ##### ##### ##### ##-",
@@ -332,6 +332,50 @@ int main() {
         "-   #   # #     #   #       #     #   #     #                      E-",
         "---------------------------------------------------------------------"
     };
+
+    char labirinto3[LABIRINTOS_ALTURA][LABRINTOS_LARGURA] = {
+        "----------------------------------------------------------------------",
+        "-P    #  #     # # # #   # #     #       #         #       #         -",
+        "-## ####### ### ### ##### ### ### ### ### ##### ##### ##### ##### ###-",
+        "-   #     #   #     # #   #   #   #       #       #   #       #   # #-",
+        "- ### ####### ### ##### ####### ##### ### ##### ####### ### ### ### #-",
+        "-         # #     #   # #   #       #     #       #       #   #   # #-",
+        "- ### ### ### ### ### ### ### ##### ##### ### ### ### ### ##### ### #-",
+        "- #           #   #   #   # #     #     # #     #     # #         # #-",
+        "- ### ####### ### ### ### ### ### ### ### ### ### ##### # ##### # # #-",
+        "-     #   #               # #   #     #   #     #       #     # #   #-",
+        "-#### ### ### ##### ### ### ### ######### ### ########### ### #######-",
+        "-     #   #       #     # #   #     #     #           #   #   #     #-",
+        "-## ### ### ##### ####### ### ### ### ### ### ####### ### ### ### ###-",
+        "-   # # #   #   #     #     # # # #     #   #       #     #     #   #-",
+        "-## ### ### ### ##### ##### ### ### ##### ### ##### ##### ### ##### #-",
+        "-     #   #     #         #   #     #     #   # #     #   # #     # #-",
+        "-#### ### ##### ##### ### ### ### ### ####### ### ### ##### ### ### #-",
+        "-     #       #     # #         #   #     #       #   #   #     # ###-",
+        "-## ##### ##### ### ### ### ##### ### ### ##### ##### ### ### ##### #-",
+        "-       # #   #   # #       #   #     #     #       #     #       # #-",
+        "-## ### ### ##### ##### ### ### ### ### ##### ### ### ### ##### ### #-",
+        "-     #     #   #       #     # #   # # #   # # #   # # #   #   #   #-",
+        "-#### ### ### ### ### ##### ##### ### ### ### ### ##### ### ##### ###-",
+        "-   #   #   #     # #   #     #     #     #       #     #       #   #-",
+        "-## ##### ### ##### ### ##### ### ### ######### ### ##### ### ### ###-",
+        "-   #     #   # #   # #       #     # #         #     #     # #     #-",
+        "- ### ##### ### ### ### ##### ### # ### ### ##### ### ### ### ##### #-",
+        "- #   # #       #   #     # #     #     # # #     # # # # #   #   # #-",
+        "- ##### ##### ### ### ### ### ### ##### ### ### ### ### ### ##### ###-",
+        "-#   #   #     #     #   #     #   #     #     # # #   #     #      #-",
+        "- ### ### ##### ### ### ### ##### ##### ### ### ### ### ##### ### ###-",
+        "- #       # #     #     #     #       #     #     # #     #     #   #-",
+        "-## ### ##### ##### ##### ### ### ######### ### ### ### ##### ### ###-",
+        "-   # #   # #   # #       #   #       #   #     # # # #       # #   #-",
+        "-#### ### ### ### ### ######### ### ### ### ### ### ### ######### ###-",
+        "-   #   # #     #   #       #     #   #     #                       E-",
+        "----------------------------------------------------------------------"
+    };
+
+    
+
+
 
     Posicao jogador;
     char entrada;
@@ -391,43 +435,79 @@ int main() {
             // Verifica se o jogador chegou à saída
             if (labirinto1[jogador.y][jogador.x] == 'E') {
                 jogando ++;
-                imprimirAvanco(Avancar);
+                imprimirAvanco(Avancar1);
                  sleep(3);
                  jogador.x = 1;
                  jogador.y = 1;
                  while (jogando==2) {
-                    imprimirLabirinto(labirinto3, jogador);
+                    imprimirLabirinto(labirinto2, jogador);
                     entrada = _getch(); // Captura a entrada do teclado
 
                     switch (entrada) {
                         case 'w': // Move para cima
-                            if (jogador.y > 0 && labirinto3[jogador.y - 1][jogador.x] != '#') {
+                            if (jogador.y > 0 && labirinto2[jogador.y - 1][jogador.x] != '#') {
                                 jogador.y--;
                             }
                             break;
                         case 's': // Move para baixo
-                            if (jogador.y < ALTURA - 1 && labirinto3[jogador.y + 1][jogador.x] != '#') {
+                            if (jogador.y < ALTURA - 1 && labirinto2[jogador.y + 1][jogador.x] != '#') {
                                 jogador.y++;
                             }
                             break;
                         case 'a': // Move para esquerda
-                            if (jogador.x > 0 && labirinto3[jogador.y][jogador.x - 1] != '#') {
+                            if (jogador.x > 0 && labirinto2[jogador.y][jogador.x - 1] != '#') {
                                 jogador.x--;
                             }
                             break;
                         case 'd': // Move para direita
-                            if (jogador.x < LARGURA - 1 && labirinto3[jogador.y][jogador.x + 1] != '#') {
+                            if (jogador.x < LARGURA - 1 && labirinto2[jogador.y][jogador.x + 1] != '#') {
                                 jogador.x++;
                             }
                             break;
                     }
 
                     // Verifica se o jogador chegou à saída
-                    if (labirinto3[jogador.y][jogador.x] == 'E') {
-                        jogando = 0;
-                        printf("Parabéns! Você chegou à saída!\n");
-                        printf("Pressione qualquer tecla para voltar ao menu.\n");
-                        _getch(); // Espera por uma tecla para voltar ao menu
+                    if (labirinto2[jogador.y][jogador.x] == 'E') {
+                        jogando = 3;
+                        imprimirAvanco(Avancar2);
+                        sleep(3);
+                        jogador.x = 1;
+                        jogador.y = 1;
+                        while (jogando==3) {
+                            imprimirLabirinto(labirinto3, jogador);
+                            entrada = _getch(); // Captura a entrada do teclado
+
+                            switch (entrada) {
+                                case 'w': // Move para cima
+                                    if (jogador.y > 0 && labirinto3[jogador.y - 1][jogador.x] != '#') {
+                                        jogador.y--;
+                                    }
+                                    break;
+                                case 's': // Move para baixo
+                                    if (jogador.y < ALTURA - 1 && labirinto3[jogador.y + 1][jogador.x] != '#') {
+                                        jogador.y++;
+                                    }
+                                    break;
+                                case 'a': // Move para esquerda
+                                    if (jogador.x > 0 && labirinto3[jogador.y][jogador.x - 1] != '#') {
+                                        jogador.x--;
+                                    }
+                                    break;
+                                case 'd': // Move para direita
+                                    if (jogador.x < LARGURA - 1 && labirinto3[jogador.y][jogador.x + 1] != '#') {
+                                        jogador.x++;
+                                    }
+                                    break;
+                            }
+
+                            // Verifica se o jogador chegou à saída
+                            if (labirinto2[jogador.y][jogador.x] == 'E') {
+                                jogando = 0;
+                                imprimirAvanco(Avancar2);
+                                sleep(3);
+                                
+                            }
+                        }
                     }
                 }
             }
