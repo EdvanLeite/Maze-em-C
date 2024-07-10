@@ -159,7 +159,6 @@ void imprimirSaida(char saida[ALTURA][LARGURA]) {
 
 
 
-
 int main() {
 
     setlocale(LC_ALL, "Portuguese");
