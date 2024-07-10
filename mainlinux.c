@@ -1,8 +1,8 @@
 #include <stdio.h> // base do código
-#include <time.h>
-#include <sys/time.h>
+#include <time.h>//Necessario para o timer
+#include <sys/time.h>//Necessario para o timer
 #include <stdlib.h>//Necessário para usar a função System("clear")
-#include <termios.h>//Necessário para scanear sem ENTER
+#include <termios.h>  //para scanear sem ENTER
 #include <string.h> //Necessário para 
 #include <unistd.h> // Necessário para usar a função sleep
 #include <locale.h> // Necessário para printar os acentos 
@@ -55,7 +55,7 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
-                printf(GREEN "P " RESET); // Jogador
+                printf(GREEN "  " RESET); // Jogador
             } else if (labirinto[i][j] == '#') {
                 printf(RED "  " RESET); // Parede
             } else if (labirinto[i][j] == 'E') {
@@ -686,9 +686,7 @@ int main() {
     };
      char labirinto5[ALTURA][LARGURA] = {
         "######################################################################",
-        "##K                              P                                 K##",
-        "#################################  ###################################",
-        "##K                                                                K##",
+        "# K                              E                                 K##",
         "#################################  ###################################",
         "##E                                                                K##",
         "#################################  ###################################",
@@ -719,8 +717,10 @@ int main() {
         "##K                                                                K##",
         "#################################  ###################################",
         "##K                                                                K##",
-        "################################  ####################################",
+        "#################################  ###################################",
         "##K                                                                K##",
+        "################################  ####################################",
+        "##K                                                                 K#",
         "######################################################################"
     };
 
@@ -785,7 +785,7 @@ int main() {
             if (labirinto1[jogador.y][jogador.x] == 'E') {
                 jogando ++;
                 imprimirAvanco(Avancar1);
-                 sleep(3);
+                 sleep(2);
                  jogador.x = 1;
                  jogador.y = 1;
                  while (jogando==2) {
@@ -819,7 +819,7 @@ int main() {
                     if (labirinto2[jogador.y][jogador.x] == 'E') {
                         jogando ++;
                         imprimirAvanco(Avancar2);
-                        sleep(3);
+                        sleep(2);
                         jogador.x = 1;
                         jogador.y = 1;
                         while (jogando==3) {
@@ -850,10 +850,10 @@ int main() {
                             }
 
                             // Verifica se o jogador chegou à saída
-                            if (labirinto2[jogador.y][jogador.x] == 'E') {
+                            if (labirinto3[jogador.y][jogador.x] == 'E') {
                                 jogando ++;
                                 imprimirAvanco(Avancar3);
-                                sleep(3);
+                                sleep(2);
                                 jogador.x = 1;
                                 jogador.y = 1;
                                 while (jogando==4) {
@@ -882,11 +882,11 @@ int main() {
                                             }
                                             break;
                                     }
-                                    if(labirinto2[jogador.y][jogador.x] == 'E') {
+                                    if(labirinto4[jogador.y][jogador.x] == 'E') {
                                         jogando++;
                                         imprimirAvanco(Avancar4);
-                                        sleep(3);
-                                        jogador.x = 1;
+                                        sleep(2);
+                                        jogador.x = 20;
                                         jogador.y = 1;
                                         while(jogando==5){  
                                             imprimirLabirinto(labirinto5, jogador);
@@ -915,21 +915,21 @@ int main() {
                                             break;
                                     }
 
-                                        }
-                                    }
+                                        
+                                    
 
                                     // Verifica se o jogador chegou à saída
                                     if (labirinto5[jogador.y][jogador.x] == 'E') {
                                         jogando = 0;
+                                        jogador.x = 1;
+                                        jogador.y = 1;
                                         stop_timer(&end_time);
-                                        imprimirAvanco(Avancar4);
-                                        sleep(3);
                                         system("clear");
                                         elapsed = elapsed_time(start_time, end_time);
                                         imprimirFinal(final, elapsed);
                                         sleep(6);
                                         
-                                    }
+                                    }}
                                 }
                             }
                 }
@@ -938,7 +938,7 @@ int main() {
                 
         }
     }
-    }}
+    }}}
 
 
        

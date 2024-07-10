@@ -1,6 +1,6 @@
 #include <stdio.h> // base do código
-#include <time.h>
-#include <sys/time.h>
+#include <time.h>//Necessario para o timer
+#include <sys/time.h>//Necessario para o timer
 #include <stdlib.h>//Necessário para usar a função System("cls")
 #include <conio.h>//Necessário para scanear sem ENTER
 #include <string.h> //Necessário para 
@@ -43,7 +43,7 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
-                printf(GREEN "P " RESET); // Jogador
+                printf(GREEN "  " RESET); // Jogador
             } else if (labirinto[i][j] == '#') {
                 printf(RED "  " RESET); // Parede
             } else if (labirinto[i][j] == 'E') {
@@ -379,7 +379,7 @@ int main() {
         "~===================================================================~",
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     };
-    char Avancar[ALTURA][LARGURA] = {
+    char Avancar4[ALTURA][LARGURA] = {
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
         "~===================================================================~",
         "~===================================================================~",
@@ -399,7 +399,7 @@ int main() {
         "~===================================================================~",
         "~===================================================================~",
         "~===================================================================~",
-        "~=============VOCE CHEGOU A SAIDA DO TERCEIRO LABIRINTO=============~",
+        "~=============VOCE CHEGOU A SAIDA DO QUARTO LABIRINTO===============~",
         "~===================================================================~",
         "~==================VAMOS PARA O QUINTO LABIRINTO!===================~",
         "~===================================================================~",
@@ -674,7 +674,7 @@ int main() {
     };
      char labirinto5[ALTURA][LARGURA] = {
         "######################################################################",
-        "##K                              P                                 K##",
+        "# K                              E                                 K##",
         "#################################  ###################################",
         "##E                                                                K##",
         "#################################  ###################################",
@@ -773,7 +773,7 @@ int main() {
             if (labirinto1[jogador.y][jogador.x] == 'E') {
                 jogando ++;
                 imprimirAvanco(Avancar1);
-                 sleep(3);
+                 sleep(2);
                  jogador.x = 1;
                  jogador.y = 1;
                  while (jogando==2) {
@@ -807,7 +807,7 @@ int main() {
                     if (labirinto2[jogador.y][jogador.x] == 'E') {
                         jogando ++;
                         imprimirAvanco(Avancar2);
-                        sleep(3);
+                        sleep(2);
                         jogador.x = 1;
                         jogador.y = 1;
                         while (jogando==3) {
@@ -838,10 +838,10 @@ int main() {
                             }
 
                             // Verifica se o jogador chegou à saída
-                            if (labirinto2[jogador.y][jogador.x] == 'E') {
+                            if (labirinto3[jogador.y][jogador.x] == 'E') {
                                 jogando ++;
                                 imprimirAvanco(Avancar3);
-                                sleep(3);
+                                sleep(2);
                                 jogador.x = 1;
                                 jogador.y = 1;
                                 while (jogando==4) {
@@ -870,59 +870,62 @@ int main() {
                                             }
                                             break;
                                     }
-
-                                    if (labirinto2[jogador.y][jogador.x] == 'E') {
-                                        jogando ++;
-                                        imprimirAvanco(Avancar);
-                                        sleep(3);
-                                        jogador.x = 1;
+                                    if(labirinto4[jogador.y][jogador.x] == 'E') {
+                                        jogando++;
+                                        imprimirAvanco(Avancar4);
+                                        sleep(2);
+                                        jogador.x = 20;
                                         jogador.y = 1;
-                                        while (jogando==5) {
+                                        while(jogando==5){  
                                             imprimirLabirinto(labirinto5, jogador);
                                             entrada = _getch(); // Captura a entrada do teclado
 
                                             switch (entrada) {
-                                                case 'w': // Move para cima
-                                                    if (jogador.y > 0 && labirinto5[jogador.y - 1][jogador.x] != '#') {
-                                                        jogador.y--;
-                                                    }
-                                                    break;
-                                                case 's': // Move para baixo
-                                                    if (jogador.y < ALTURA - 1 && labirinto5[jogador.y + 1][jogador.x] != '#') {
-                                                        jogador.y++;
-                                                    }
-                                                    break;
-                                                case 'a': // Move para esquerda
-                                                    if (jogador.x > 0 && labirinto5[jogador.y][jogador.x - 1] != '#') {
-                                                        jogador.x--;
-                                                    }
-                                                    break;
-                                                case 'd': // Move para direita
-                                                    if (jogador.x < LARGURA - 1 && labirinto5[jogador.y][jogador.x + 1] != '#') {
-                                                        jogador.x++;
-                                                    }
-                                                    break;
+                                            case 'w': // Move para cima
+                                            if (jogador.y > 0 && labirinto5[jogador.y - 1][jogador.x] != '#') {
+                                                jogador.y--;
                                             }
-
-                                            // Verifica se o jogador chegou à saída
-                                            if (labirinto5[jogador.y][jogador.x] == 'E') {
-                                                jogando = 0;
-                                                stop_timer(&end_time);
-                                                imprimirAvanco(Avancar3);
-                                                sleep(3);
-                                                system("cls");
-                                                elapsed = elapsed_time(start_time, end_time);
-                                                imprimirFinal(final, elapsed);
-                                                sleep(6);
-                                                
+                                            break;
+                                            case 's': // Move para baixo
+                                            if (jogador.y < ALTURA - 1 && labirinto5[jogador.y + 1][jogador.x] != '#') {
+                                                jogador.y++;
                                             }
-                                        }
+                                            break;
+                                            case 'a': // Move para esquerda
+                                            if (jogador.x > 0 && labirinto5[jogador.y][jogador.x - 1] != '#') {
+                                                jogador.x--;
+                                            }
+                                            break;
+                                            case 'd': // Move para direita
+                                            if (jogador.x < LARGURA - 1 && labirinto5[jogador.y][jogador.x + 1] != '#') {
+                                                jogador.x++;
+                                            }
+                                            break;
                                     }
+
+                                        
+                                    
+
+                                    // Verifica se o jogador chegou à saída
+                                    if (labirinto5[jogador.y][jogador.x] == 'E') {
+                                        jogando = 0;
+                                        jogador.x = 1;
+                                        jogador.y = 1;
+                                        stop_timer(&end_time);
+                                        system("cls");
+                                        elapsed = elapsed_time(start_time, end_time);
+                                        imprimirFinal(final, elapsed);
+                                        sleep(6);
+                                        
+                                    }}
+                                }
+                            }
                 }
             }
 
                 
         }
+    }
     }}}
 
 
