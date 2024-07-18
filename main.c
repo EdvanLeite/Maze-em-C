@@ -1,6 +1,6 @@
 #include <stdio.h> // base do código
-#include <time.h>
-#include <sys/time.h>
+#include <time.h>//Necessario para o timer
+#include <sys/time.h>//Necessario para o timer
 #include <stdlib.h>//Necessário para usar a função System("cls")
 #include <conio.h>//Necessário para scanear sem ENTER
 #include <string.h> //Necessário para 
@@ -15,12 +15,14 @@
 #define MAGENTA "\x1b[45m"    // Fundo magenta (ANSI)
 #define CYAN    "\x1b[46m"    // Fundo ciano (ANSI)
 #define WHITE   "\x1b[47m"    // Fundo branco (ANSI)
+#define RANKING_FILE "ranking.txt" //txt para o ranking
 
 #define LARGURA 70
 #define ALTURA  40
 
 typedef struct {
     int x, y;
+    char nick[6];
 } Posicao;
 
 void start_timer(struct timeval *start_time) { //Captura o tempo inicial.
@@ -43,7 +45,7 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
-                printf(GREEN "P " RESET); // Jogador
+                printf(GREEN "  " RESET); // Jogador
             } else if (labirinto[i][j] == '#') {
                 printf(RED "  " RESET); // Parede
             } else if (labirinto[i][j] == 'E') {
@@ -70,6 +72,23 @@ void imprimirMenu(char menu1[ALTURA][LARGURA]) {
                 printf(RED "  " RESET, menu1[i][j]); // Red for menu text
             } else {
                 printf(RED " %c" RESET, menu1[i][j]); // Red for menu text
+            } 
+        }
+        printf("\n");
+    }
+
+}
+
+void imprimirInicio(char inicio[ALTURA][LARGURA]) {
+    system("cls"); // Limpar a tela (para Windows)
+    for (int i = 0; i < ALTURA; i++) {
+        for (int j = 0; j < LARGURA; j++) {
+            if (inicio[i][j] == '=') {
+                printf(BLUE "  " RESET); // Blue for '='
+            } else if (inicio[i][j] == '~') {
+                printf(RED "  " RESET, inicio[i][j]); // Red for menu text
+            } else {
+                printf(RED " %c" RESET, inicio[i][j]); // Red for menu text
             } 
         }
         printf("\n");
@@ -112,28 +131,36 @@ void imprimirAvanco(char Avanco[ALTURA][LARGURA]) {
     _getch();
 }
 
-void imprimirFinal(char fim[ALTURA][LARGURA], double tempo) {
-    system("cls"); // Limpar a tela (para Windows)
+void imprimirFinal(char fim[ALTURA][LARGURA], double tempo, Posicao Jogador) {
+    system("cls"); // Use "clear" para Unix/Linux
     int minutes = (int) tempo / 60;
     int seconds = (int) tempo % 60;
-    int k=0;
+    int k = 0, y = 0;
     char time_str[5];
     sprintf(time_str, "%02d:%02d", minutes, seconds);
+    int a = strlen(Jogador.nick);
 
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (fim[i][j] == '=') {
-                printf(GREEN "  " RESET); // Blue for '='
+                printf(GREEN "  " RESET);
             } else if (fim[i][j] == '~') {
-                printf(BLUE "  " RESET); // Red for '~'
-            }else if (fim[i][j] == '-') {
-                printf(RED "  " RESET); 
-            } else if (fim[i][j] == '#') {
-                printf(BLUE " %c" RESET, time_str[k]); // Red for time digits
+                printf(BLUE "  " RESET);
+            }  else if (fim[i][j] == '#') {
+                printf(BLUE " %c" RESET, time_str[k]);
                 k++;
+            } else if (fim[i][j] == '*') {
+                if (y < a ) {
+                    printf(BLUE " %c" RESET, Jogador.nick[y]);
+                    y++;
+                } else {
+                    printf(GREEN "  " RESET); 
+                }
+            } else if (fim[i][j] == '-') {
+                printf(RED "  " RESET); 
             } else {
-                printf(BLUE " %c" RESET, fim[i][j]); // Red for other characters
-            } 
+                printf(BLUE " %c" RESET, fim[i][j]);
+            }
         }
         printf("\n");
     }
@@ -158,11 +185,53 @@ void imprimirSaida(char saida[ALTURA][LARGURA]) {
 }
 
 
-
-
 int main() {
 
     setlocale(LC_ALL, "Portuguese");
+
+
+    char inicio[ALTURA][LARGURA]= {
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~======================= Digite seu Nickname =======================~",
+        "~==================== Deve possuir 5 Caracteres ====================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    };
 
     char menu[ALTURA][LARGURA]= {
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
@@ -442,7 +511,7 @@ int main() {
         "~===================================================================~",
         "~===================================================================~",
         "~===================================================================~",
-        "~==============================PARABENS=============================~",
+        "~============================PARABENS=*****=========================~",
         "~===================================================================~",
         "~================O ULTIMO LABIRINTO FOI FINALIZADO==================~",
         "~===================================================================~",
@@ -674,7 +743,7 @@ int main() {
     };
      char labirinto5[ALTURA][LARGURA] = {
         "######################################################################",
-        "# K                              P                                 K##",
+        "#      E                                                           K##",
         "#################################  ###################################",
         "##E                                                                K##",
         "#################################  ###################################",
@@ -707,8 +776,8 @@ int main() {
         "##K                                                                K##",
         "#################################  ###################################",
         "##K                                                                K##",
-        "################################  ####################################",
-        "##K                                                                 K#",
+        "#################################  ####################################",
+        "##K                                                                  K#",
         "######################################################################"
     };
 
@@ -717,10 +786,11 @@ int main() {
     struct timeval start_time, end_time;
     double elapsed;
     Posicao jogador;
-    char entrada;
+    char entrada;    
     char opcao;
     int em_jogo = 1;
     int jogando = 0;
+    
 
     while (em_jogo) {
         imprimirMenu(menu);
@@ -728,6 +798,8 @@ int main() {
 
         switch (opcao) {
             case '1':
+                imprimirInicio(inicio);
+                fgets(jogador.nick,50,stdin);
                 jogador.x = 1;
                 jogador.y = 1;
                 jogando = 1;
@@ -773,7 +845,7 @@ int main() {
             if (labirinto1[jogador.y][jogador.x] == 'E') {
                 jogando ++;
                 imprimirAvanco(Avancar1);
-                 sleep(3);
+                 sleep(2);
                  jogador.x = 1;
                  jogador.y = 1;
                  while (jogando==2) {
@@ -807,7 +879,7 @@ int main() {
                     if (labirinto2[jogador.y][jogador.x] == 'E') {
                         jogando ++;
                         imprimirAvanco(Avancar2);
-                        sleep(3);
+                        sleep(2);
                         jogador.x = 1;
                         jogador.y = 1;
                         while (jogando==3) {
@@ -838,10 +910,10 @@ int main() {
                             }
 
                             // Verifica se o jogador chegou à saída
-                            if (labirinto2[jogador.y][jogador.x] == 'E') {
+                            if (labirinto3[jogador.y][jogador.x] == 'E') {
                                 jogando ++;
                                 imprimirAvanco(Avancar3);
-                                sleep(3);
+                                sleep(2);
                                 jogador.x = 1;
                                 jogador.y = 1;
                                 while (jogando==4) {
@@ -870,10 +942,10 @@ int main() {
                                             }
                                             break;
                                     }
-                                    if(labirinto5[jogador.y][jogador.x] == '#') {
+                                    if(labirinto4[jogador.y][jogador.x] == 'E') {
                                         jogando++;
                                         imprimirAvanco(Avancar4);
-                                        sleep(3);
+                                        sleep(2);
                                         jogador.x = 1;
                                         jogador.y = 1;
                                         while(jogando==5){  
@@ -902,22 +974,25 @@ int main() {
                                             }
                                             break;
                                     }
-
-                                        }
+                                    if(labirinto5[jogador.y][jogador.x] == 'k'){
+                                        jogador.x = 1;
+                                        jogador.y = 1;
                                     }
+                                        
+                                    
 
                                     // Verifica se o jogador chegou à saída
                                     if (labirinto5[jogador.y][jogador.x] == 'E') {
                                         jogando = 0;
+                                        jogador.x = 1;
+                                        jogador.y = 1;
                                         stop_timer(&end_time);
-                                        imprimirAvanco(Avancar4);
-                                        sleep(3);
                                         system("cls");
                                         elapsed = elapsed_time(start_time, end_time);
-                                        imprimirFinal(final, elapsed);
+                                        imprimirFinal(final, elapsed, jogador);
                                         sleep(6);
                                         
-                                    }
+                                    }}
                                 }
                             }
                 }
@@ -926,7 +1001,7 @@ int main() {
                 
         }
     }
-    }}
+    }}}
 
 
        
