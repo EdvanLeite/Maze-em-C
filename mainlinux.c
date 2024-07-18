@@ -1,8 +1,8 @@
 #include <stdio.h> // base do código
 #include <time.h>//Necessario para o timer
 #include <sys/time.h>//Necessario para o timer
-#include <stdlib.h>//Necessário para usar a função System("clear")
-#include <termios.h>  //para scanear sem ENTER
+#include <stdlib.h>//Necessário para usar a função System("cls")
+#include <termios.h>//Necessário para scanear sem ENTER
 #include <string.h> //Necessário para 
 #include <unistd.h> // Necessário para usar a função sleep
 #include <locale.h> // Necessário para printar os acentos 
@@ -15,6 +15,7 @@
 #define MAGENTA "\x1b[45m"    // Fundo magenta (ANSI)
 #define CYAN    "\x1b[46m"    // Fundo ciano (ANSI)
 #define WHITE   "\x1b[47m"    // Fundo branco (ANSI)
+#define RANKING_FILE "ranking.txt" //txt para o ranking
 
 #define LARGURA 70
 #define ALTURA  40
@@ -33,6 +34,7 @@ int getch() {
 
 typedef struct {
     int x, y;
+    char nick[6];
 } Posicao;
 
 void start_timer(struct timeval *start_time) { //Captura o tempo inicial.
@@ -51,7 +53,7 @@ double elapsed_time(struct timeval start_time, struct timeval end_time) { //Calc
 }
 
 void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
-    system("clear"); // Limpar a tela 
+    system("cls"); // Limpar a tela 
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (i == jogador.y && j == jogador.x) {
@@ -73,7 +75,7 @@ void imprimirLabirinto(char labirinto[ALTURA][LARGURA], Posicao jogador) {
 }
 
 void imprimirMenu(char menu1[ALTURA][LARGURA]) {
-    system("clear"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (menu1[i][j] == '=') {
@@ -89,9 +91,26 @@ void imprimirMenu(char menu1[ALTURA][LARGURA]) {
 
 }
 
+void imprimirInicio(char inicio[ALTURA][LARGURA]) {
+    system("cls"); // Limpar a tela (para Windows)
+    for (int i = 0; i < ALTURA; i++) {
+        for (int j = 0; j < LARGURA; j++) {
+            if (inicio[i][j] == '=') {
+                printf(BLUE "  " RESET); // Blue for '='
+            } else if (inicio[i][j] == '~') {
+                printf(RED "  " RESET, inicio[i][j]); // Red for menu text
+            } else {
+                printf(RED " %c" RESET, inicio[i][j]); // Red for menu text
+            } 
+        }
+        printf("\n");
+    }
+
+}
+
 void imprimirInstrucoes(char instrucao[ALTURA][LARGURA]) {
     setlocale(LC_ALL, "pt_BR.UTF-8");
-    system("clear"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (instrucao[i][j] == '=') {
@@ -108,7 +127,7 @@ void imprimirInstrucoes(char instrucao[ALTURA][LARGURA]) {
 }
 
 void imprimirAvanco(char Avanco[ALTURA][LARGURA]) {
-    system("clear"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (Avanco[i][j] == '=') {
@@ -124,28 +143,36 @@ void imprimirAvanco(char Avanco[ALTURA][LARGURA]) {
     getch();
 }
 
-void imprimirFinal(char fim[ALTURA][LARGURA], double tempo) {
-    system("clear"); // Limpar a tela (para Windows)
+void imprimirFinal(char fim[ALTURA][LARGURA], double tempo, Posicao Jogador) {
+    system("cls"); // Use "clear" para Unix/Linux
     int minutes = (int) tempo / 60;
     int seconds = (int) tempo % 60;
-    int k=0;
+    int k = 0, y = 0;
     char time_str[5];
     sprintf(time_str, "%02d:%02d", minutes, seconds);
+    int a = strlen(Jogador.nick);
 
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (fim[i][j] == '=') {
-                printf(GREEN "  " RESET); // Blue for '='
+                printf(GREEN "  " RESET);
             } else if (fim[i][j] == '~') {
-                printf(BLUE "  " RESET); // Red for '~'
-            }else if (fim[i][j] == '-') {
-                printf(RED "  " RESET); 
-            } else if (fim[i][j] == '#') {
-                printf(BLUE " %c" RESET, time_str[k]); // Red for time digits
+                printf(BLUE "  " RESET);
+            }  else if (fim[i][j] == '#') {
+                printf(BLUE " %c" RESET, time_str[k]);
                 k++;
+            } else if (fim[i][j] == '*') {
+                if (y < a ) {
+                    printf(BLUE " %c" RESET, Jogador.nick[y]);
+                    y++;
+                } else {
+                    printf(GREEN "  " RESET); 
+                }
+            } else if (fim[i][j] == '-') {
+                printf(RED "  " RESET); 
             } else {
-                printf(BLUE " %c" RESET, fim[i][j]); // Red for other characters
-            } 
+                printf(BLUE " %c" RESET, fim[i][j]);
+            }
         }
         printf("\n");
     }
@@ -153,7 +180,7 @@ void imprimirFinal(char fim[ALTURA][LARGURA], double tempo) {
 
 
 void imprimirSaida(char saida[ALTURA][LARGURA]) {
-    system("clear"); // Limpar a tela (para Windows)
+    system("cls"); // Limpar a tela (para Windows)
     for (int i = 0; i < ALTURA; i++) {
         for (int j = 0; j < LARGURA; j++) {
             if (saida[i][j] == '=') {
@@ -170,11 +197,53 @@ void imprimirSaida(char saida[ALTURA][LARGURA]) {
 }
 
 
-
-
 int main() {
 
     setlocale(LC_ALL, "Portuguese");
+
+
+    char inicio[ALTURA][LARGURA]= {
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~======================= Digite seu Nickname =======================~",
+        "~==================== Deve possuir 5 Caracteres ====================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~===================================================================~",
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    };
 
     char menu[ALTURA][LARGURA]= {
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
@@ -454,7 +523,7 @@ int main() {
         "~===================================================================~",
         "~===================================================================~",
         "~===================================================================~",
-        "~==============================PARABENS=============================~",
+        "~============================PARABENS=*****=========================~",
         "~===================================================================~",
         "~================O ULTIMO LABIRINTO FOI FINALIZADO==================~",
         "~===================================================================~",
@@ -686,7 +755,7 @@ int main() {
     };
      char labirinto5[ALTURA][LARGURA] = {
         "######################################################################",
-        "# K                              E                                 K##",
+        "#      E                                                           K##",
         "#################################  ###################################",
         "##E                                                                K##",
         "#################################  ###################################",
@@ -719,8 +788,8 @@ int main() {
         "##K                                                                K##",
         "#################################  ###################################",
         "##K                                                                K##",
-        "################################  ####################################",
-        "##K                                                                 K#",
+        "#################################  ####################################",
+        "##K                                                                  K#",
         "######################################################################"
     };
 
@@ -729,10 +798,11 @@ int main() {
     struct timeval start_time, end_time;
     double elapsed;
     Posicao jogador;
-    char entrada;
+    char entrada;    
     char opcao;
     int em_jogo = 1;
     int jogando = 0;
+    
 
     while (em_jogo) {
         imprimirMenu(menu);
@@ -740,6 +810,8 @@ int main() {
 
         switch (opcao) {
             case '1':
+                imprimirInicio(inicio);
+                fgets(jogador.nick,50,stdin);
                 jogador.x = 1;
                 jogador.y = 1;
                 jogando = 1;
@@ -886,7 +958,7 @@ int main() {
                                         jogando++;
                                         imprimirAvanco(Avancar4);
                                         sleep(2);
-                                        jogador.x = 20;
+                                        jogador.x = 1;
                                         jogador.y = 1;
                                         while(jogando==5){  
                                             imprimirLabirinto(labirinto5, jogador);
@@ -914,7 +986,10 @@ int main() {
                                             }
                                             break;
                                     }
-
+                                    if(labirinto5[jogador.y][jogador.x] == 'k'){
+                                        jogador.x = 1;
+                                        jogador.y = 1;
+                                    }
                                         
                                     
 
@@ -924,9 +999,9 @@ int main() {
                                         jogador.x = 1;
                                         jogador.y = 1;
                                         stop_timer(&end_time);
-                                        system("clear");
+                                        system("cls");
                                         elapsed = elapsed_time(start_time, end_time);
-                                        imprimirFinal(final, elapsed);
+                                        imprimirFinal(final, elapsed, jogador);
                                         sleep(6);
                                         
                                     }}
